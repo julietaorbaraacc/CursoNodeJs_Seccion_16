@@ -10,8 +10,7 @@ import {
 	routerCat,
 	routerProd,
 	routerSearch,
-	routerUser,
-	routerUpload
+	routerUser
 } from '../routes/index.js';
 
 //Creamos la clase Server en donde vamos a poner todas las configuraciones necesarias para servir el contenido
@@ -26,8 +25,7 @@ class Server {
 			search: "/api/search",
 			categories: "/api/categories",
 			products: "/api/products",
-			users: "/api/users",
-			uploads: "/api/uploads"
+			users: "/api/users"
 		}
 
 		//Conectar a la base de datos
@@ -54,13 +52,6 @@ class Server {
 
 		//Leemos la carpeta Publica
 		this.app.use(express.static("public"));
-
-		//Carga de archivos
-		this.app.use(fileUpload({
-			useTempFiles: true,
-			tempFileDir: '/tmp/',
-			createParentPath: true //Esto lo que permite es crear un directorio si es requerido y no existe
-		}));
 	}
 
 	routes() {
@@ -70,7 +61,6 @@ class Server {
 		this.app.use(this.paths.categories, routerCat);
 		this.app.use(this.paths.users, routerUser);
 		this.app.use(this.paths.products, routerProd);
-		this.app.use(this.paths.uploads, routerUpload);
 	}
 
 	listen() {

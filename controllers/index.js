@@ -23,12 +23,6 @@ import {
 	usersDelete
 } from './user.js';
 import { buscar } from './buscar.js';
-import {
-	cargarArchivo,
-	actualizarImagen,
-	actualizarImagenCloudinary,
-	mostrarImagen
-} from './uploads.js';
 
 export {
 	login,
@@ -47,9 +41,5 @@ export {
 	usersPut,
 	usersPost,
 	usersDelete,
-	buscar,
-	cargarArchivo,
-	actualizarImagen,
-	actualizarImagenCloudinary,
-	mostrarImagen
+	buscar
 }

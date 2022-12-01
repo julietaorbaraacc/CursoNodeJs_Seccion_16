@@ -8,7 +8,6 @@ import {
 } from './db-validators.js';
 import { generarJWT } from './generar-jwt.js';
 import { googleVerify } from './google-verify.js';
-import { subirArchivo } from './subir-archivo.js';
 
 export {
 	rolValido,
@@ -18,6 +17,5 @@ export {
 	existeProductoPorID,
 	coleccionesPermitidas,
 	generarJWT,
-	googleVerify,
-	subirArchivo
+	googleVerify
 }
