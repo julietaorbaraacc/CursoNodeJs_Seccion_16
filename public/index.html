@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Proyecto NodeJS</title>
+</head>
+
+<body>
+	<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+	<h1>Proyecto NodeJs Café</h1>
+	<hr>
+	<div id="g_id_onload" data-client_id="421468124896-7ivvfm9ga9fuu518d4agobp56sodrad0.apps.googleusercontent.com"
+		data-callback="handleCredentialResponse" data-auto_prompt="false">
+	</div>
+	<div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+		data-shape="rectangular" data-logo_alignment="left">
+	</div>
+	<button id="google_signout">Signout</button>
+
+	<script>
+		function handleCredentialResponse(response) {
+			//Creamos la constante body y le guardamos el valor del id_token que viene de la API
+			const body = { id_token: response.credential }
+
+			//Con fetch trabajamos a modo de promesa, le indicamos la url, el metodo los header y en el body le seteamos el valor que nos trajimos de la api
+			fetch(window.location.hostname.includes('localhost') ? 'http://localhost:8080/api/auth/google' : 'https://cursonodejs-proyecto-cafe-jo.onrender.com/api/auth/google', {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(body)
+			})
+				.then(resp => resp.json())
+				.then(resp => {
+					localStorage.setItem("email", resp.usuario.correo);
+				})
+				.catch(console.warn);
+		}
+
+		//Hacemos el logout de google
+		const button = document.getElementById("google_signout");
+		button.addEventListener("click", () => {
+			google.accounts.id.disableAutoSelect();
+			google.accounts.id.revoke(localStorage.getItem("email"), done => {
+				localStorage.clear();
+				location.reload();
+			});
+		});
+	</script>
+</body>
+
+</html>
