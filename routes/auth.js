@@ -6,9 +6,13 @@ import { check } from 'express-validator';
 //Interno
 import {
 	googleSignIn,
-	login
+	login,
+	renovarToken
 } from '../controllers/index.js';
-import { validarCampos } from '../middlewares/index.js';
+import {
+	validarCampos,
+	validarJWT
+} from '../middlewares/index.js';
 
 const routerAuth = Router();
 
@@ -23,6 +27,9 @@ routerAuth.post("/google", [
 	check("id_token", "El token de google es necesario.").not().isEmpty(),
 	validarCampos
 ], googleSignIn);
+
+//Validamos el token existente y generamos uno nuevo, se genera uno nuevo en cada recarga de la pagina
+routerAuth.get("/", validarJWT, renovarToken);
 
 export {
 	routerAuth

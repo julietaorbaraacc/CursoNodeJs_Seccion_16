@@ -1,5 +1,6 @@
 //Externo
 import jsonwebtoken from "jsonwebtoken";
+import { Usuario } from "../models/index.js";
 
 //Esta funcion es para generar el token
 const generarJWT = async (uid = "") => {
@@ -17,6 +18,35 @@ const generarJWT = async (uid = "") => {
 	});
 }
 
+//Comprobamos el JWT
+const comprobarJWT = async (token) => {
+	try {
+		//Si el token tiene 10 o menos caracteres entonces va a retornar un null
+		if (token.length <= 10) {
+			return null;
+		}
+
+		//Tomamos el token, lo desencriptamos y obtenemos el uid
+		const { uid } = jsonwebtoken.verify(token, process.env.SECREORPRIVATEKEY);
+		//Chequeamos que el uid exista en la DB
+		const usuario = await Usuario.findById(uid);
+
+		if (usuario) { //Si el usuario existe
+			if (usuario.estado) {
+				return usuario; //Si el estado del usuario es true retorna el usuario
+			} else {
+				return null; //Si el estado del usuario es false retorna null
+			}
+		} else {
+			return null; //Si el usuario no existe retirna null
+		}
+	} catch (error) {
+		console.log(error);
+		return null
+	}
+}
+
 export {
-	generarJWT
+	generarJWT,
+	comprobarJWT
 }

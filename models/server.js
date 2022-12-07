@@ -1,7 +1,8 @@
 //Externo
 import express from 'express';
 import cors from 'cors';
-import fileUpload from "express-fileupload";
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 //Interno
 import { dbConnection } from '../database/config.js';
@@ -12,13 +13,16 @@ import {
 	routerSearch,
 	routerUser
 } from '../routes/index.js';
+import { socketController } from '../sockets/controller.js'
 
 //Creamos la clase Server en donde vamos a poner todas las configuraciones necesarias para servir el contenido
-class Server {
+class ServerConfig {
 	constructor() {
 		//Seteamos 
 		this.app = express();
 		this.port = process.env.PORT;
+		this.server = createServer(this.app);
+		this.io = new Server(this.server);
 
 		this.paths = {
 			auth: "/api/auth",
@@ -33,6 +37,9 @@ class Server {
 
 		//Middlewares
 		this.middlewares();
+
+		//Sockets
+		this.sockets();
 
 		//Rutas de conexión
 		this.routes();
@@ -54,6 +61,11 @@ class Server {
 		this.app.use(express.static("public"));
 	}
 
+	sockets() {
+		//Se le envia socket y this.io para poder emitir para todos y no tener que hacer el broadcast
+		this.io.on('connection', (socket) => socketController(socket, this.io));
+	}
+
 	routes() {
 		//Lamamos la ruta del constructor y los callback de router
 		this.app.use(this.paths.auth, routerAuth);
@@ -64,12 +76,12 @@ class Server {
 	}
 
 	listen() {
-		this.app.listen(this.port, () => {
+		this.server.listen(this.port, () => {
 			console.log(`Example app listening on port ${this.port}`);
 		});
 	}
 }
 
 export {
-	Server
+	ServerConfig
 }

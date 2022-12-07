@@ -6,7 +6,10 @@ import {
 	existeProductoPorID,
 	coleccionesPermitidas
 } from './db-validators.js';
-import { generarJWT } from './generar-jwt.js';
+import {
+	generarJWT,
+	comprobarJWT
+} from './generar-jwt.js';
 import { googleVerify } from './google-verify.js';
 
 export {
@@ -17,5 +20,6 @@ export {
 	existeProductoPorID,
 	coleccionesPermitidas,
 	generarJWT,
+	comprobarJWT,
 	googleVerify
 }

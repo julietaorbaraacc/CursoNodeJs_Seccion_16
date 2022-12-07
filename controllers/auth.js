@@ -8,6 +8,7 @@ import {
 	googleVerify
 } from "../helpers/index.js";
 
+//Login normal, con los usuarios que tenemos en la base de datos
 const login = async (req, res) => {
 	const { correo, password } = req.body;
 
@@ -52,6 +53,7 @@ const login = async (req, res) => {
 	}
 }
 
+//Login/Signup de Google
 const googleSignIn = async (req, res) => {
 	//Tomamos el token que se seteo en el body previamente
 	const { id_token } = req.body;
@@ -106,7 +108,22 @@ const googleSignIn = async (req, res) => {
 	}
 }
 
+//Generamos un nuevo token
+const renovarToken = async (req, res) => {
+	//Tomaos el usuario del request
+	const { usuario } = req;
+	//Generamos un token para ese usuario
+	const token = await generarJWT(usuario.id);
+
+	//Retornamos el usuario y el token nuevo
+	res.json({
+		usuario,
+		token
+	});
+}
+
 export {
 	login,
-	googleSignIn
+	googleSignIn,
+	renovarToken
 }

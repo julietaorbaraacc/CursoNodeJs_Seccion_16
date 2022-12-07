@@ -1,6 +1,7 @@
 import {
 	login,
-	googleSignIn
+	googleSignIn,
+	renovarToken
 } from './auth.js';
 import {
 	obtenerCategorias,
@@ -27,6 +28,7 @@ import { buscar } from './buscar.js';
 export {
 	login,
 	googleSignIn,
+	renovarToken,
 	obtenerCategorias,
 	obtenerCategoria,
 	crearCategoria,

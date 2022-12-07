@@ -3,8 +3,8 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 //Importaciones de lo interno
-import { Server } from './models/server.js';
+import { ServerConfig } from './models/server.js';
 
 //Inicializamos la clase y llamamos al listen
-const server = new Server();
+const server = new ServerConfig();
 server.listen();
